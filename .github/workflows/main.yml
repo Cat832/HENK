@@ -15,9 +15,7 @@ jobs:
 
     - name: Build plugin # Remove or modify this step as needed
       run: |
-        composer install --no-dev
-        npm install
-        npm run build
+        echo Building...
 
     - name: Generate zip
       uses: 10up/action-wordpress-plugin-build-zip@stable

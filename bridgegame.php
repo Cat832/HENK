@@ -2,11 +2,11 @@
 
 /*
 Plugin Name: BridgeGame
-Plugin URI: https://example1.com
+Plugin URI: https://github.com/Cat832/HENK
 Description: A fun game to introduce bridge
 Version: 1.{VersionCounter}
 Author: Pepijn van der Valk
-Author URI: https://example2.com
+Author URI: https://github.com/Cat832
 License: GPL2
 */ 
 

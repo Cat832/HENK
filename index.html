@@ -9,45 +9,19 @@
     <title>Document</title>
     <noscript>This project requires javascript to run. Your device/browser does not support javascript</noscript>
 
-    <style>
-        body {
-            cursor: url("images/cursor.png"), auto;
-            margin: 8px;
-        }
-
-        html {
-            cursor: url("images/cursor.png"), url("images/cursor.png"), auto;
-        }
-
-        canvas {
-            border: 1px solid black;
-        }
-
-        .centerer {
-            width: 100%;
-            justify-content: center;
-            display: flex;
-        }
-
-        button {
-            height: 50px;
-        }
-
-        #score {
-            font-size: xx-large;
-            margin: 10px;
-            margin-top: 3px;
-        }
-
-
-    </style>
+    <link rel="stylesheet" href="bridgegame.css">
     <script src="script.js"></script>
     <script src="games.js"></script>
 </head>
 
 <body>
-    <div class="centerer"><canvas class="game"></canvas></div>
-<div class="centerer"><canvas class="hand"></canvas><h1 id="score"></h1></div>
+    <div class="centerer">
+        <canvas class="game"></canvas>
+    </div>
+    <div class="centerer">
+        <canvas class="hand"></canvas>
+        <h1 id="score"></h1>
+    </div>
     <script src="GAMECODE.js"></script>
 </body>
 

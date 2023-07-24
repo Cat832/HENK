@@ -11,10 +11,12 @@ License: GPL2
 */ 
 
 function bridgegame_add() {
-    return '<button onclick="clickedme()"><img src="' . plugin_dir_url(__FILE__) . '/img/cat.png"/>Click me</button>';
+    return '<button onclick="reset_game()"><img src="' . plugin_dir_url(__FILE__) . '/images/Hart.png"/>Click me to start game</button>';
 }
 
-wp_enqueue_script('tstjs', plugin_dir_url(__FILE__).'/js/tstjs.js');
+wp_enqueue_style('bridgegame_style', plugin_dir_url(__FILE__).'/bridgegame.css');
+wp_enqueue_script('bridgegame_script', plugin_dir_url(__FILE__).'/script.js');
+wp_enqueue_script('bridgegame_gamecode', plugin_dir_url(__FILE__).'/GAMECODE.js');
 
 add_shortcode('bridgegame', 'bridgegame_add'); 
 

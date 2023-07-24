@@ -13,13 +13,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Build plugin # Remove or modify this step as needed
+    - name: Build plugin
       run: |
         echo Building...
-    
-    - name: Zip artifact for deployment
-      run: zip release.zip ./* -r
-    
+          
+    - name: Find and Replace
+      uses: jacobtomlinson/gha-find-replace@v3
+      with:
+        find: "{VersionCounter}"
+        replace: ${{ github.run_number }}
+        regex: false
+          
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
       with:

@@ -64,7 +64,7 @@ var custom = {
     },
     //Check if cards "fit" like in bridge
     bridgeFit: function (card1, card2, trump) {
-        if (!trump) {
+        if (trump == false) {
             if (card1.color == card2.color) {
                 return true;
             }

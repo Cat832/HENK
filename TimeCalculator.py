@@ -10,7 +10,7 @@ def convertTime (s):
     return str(hours) + "h " + str(minutes) + "m " + str(seconds);
 
 
-
+print(convertTime(49115))
 
 
 

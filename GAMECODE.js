@@ -31,8 +31,7 @@ heart.src = "images/hart.png";
 diamond.src = "images/ruit.png";
 var collect = new Audio("sounds/pickupCoin.wav");
 var fail = new Audio("sounds/buzzer-or-wrong-answer-20582.mp3");
-
-
+var lastUpdate = Date.now();
 
 //Variables:
 
@@ -47,11 +46,12 @@ const symbols = ["spade", "diamond", "heart", "club"];
 
 const hand = []
 const colors = ["red", "orange", "black", "gray"];
+var trump = custom.math.selectRandom(colors);
 for (var i = 0; i < 3; i++) {
     hand.push(new innerValue(custom.math.selectRandom(colors), custom.math.roundRandom(9) + 2));
 }
 const refresh_Hand = document.querySelector("button#handReset");
-var color = colors[Math.floor(Math.random() * 4)];
+var color = trump;
 var score = 0;
 var state = "Change Card";
 var card;
@@ -96,6 +96,7 @@ function refreshCircles() {
             return;
         }
     }
+    trump = custom.math.selectRandom(colors);
     //Refresh them
     for (const card of cards) {
         card.refresh();
@@ -114,14 +115,7 @@ class Card {
         this.stop = false;
         this.addition = 20;
         this.card = new innerValue(this.color, this.value);
-        this.price = 0;
-
         this.onRender = () => {
-            if (custom.bridgeFit(hand[0], this.card, false)) {
-                this.price = 5;
-                return;
-            }
-            this.price = 0;
         }
 
         this.refresh = () => {
@@ -154,19 +148,18 @@ class Card {
         }
 
         this.update = () => {
+            this.deltaTime = Date.now() - lastUpdate;
             this.draw();
             if (!this.stop) { this.y += this.vy; }
-            if (this.price > 0.31 && !this.stop) { this.price -= 0.32; }
 
             //Collision between player
             if (custom.rectCollide(this.x, this.y, this.w, this.h, player.x, player.y, player.w, player.h)) {
-                if (custom.bridgeFit(this.card, hand[0], color)) {
+                if (custom.bridgeFit(this.card, hand[0], trump)) {
                     refreshHand();
                     collect.play();
                 } else {
                     fail.play();
                 }
-                score += this.price * 10;
                 this.refresh();
                 this.stop = true;
                 card = this.color;
@@ -259,8 +252,6 @@ function refreshHand() {
         )
     }
 }
-
-
 //Events:
 var interval;
 
@@ -290,15 +281,18 @@ function animate() {
     c.clearRect(0, 0, 800, 500);
     h.clearRect(0, 0, 180, 100);
 
-    document.getElementById("score").innerHTML = Math.round(score*10) / 10;
+    //Calculate deltatime
+    lastUpdate = Date.now();
+
+    document.getElementById("score").innerHTML = Math.round(score * 10) / 10;
     for (const card of cards) {
         card.update();
     }
     for (const handCard of handCards) {
         handCard.update();
     }
+    color = trump;
     refreshCircles();
-    color = hand[0].color;
     player.update();
 
 }

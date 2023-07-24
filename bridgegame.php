@@ -11,7 +11,18 @@ License: GPL2
 */ 
 
 function bridgegame_add() {
-    return '<button onclick="reset_game()"><img src="' . plugin_dir_url(__FILE__) . '/images/Hart.png"/>Click me to start game</button>';
+    return '
+    <div class="centerer">
+        <canvas class="game"></canvas>
+    </div>
+    <div class="centerer">
+        <canvas class="hand"></canvas>
+        <h1 id="score"></h1>
+    </div>
+    <button onclick="reset_game()">
+        <img src="' . plugin_dir_url(__FILE__) . '/images/Hart.png"/>
+        Click me to start game
+    </button>';
 }
 
 wp_enqueue_style('bridgegame_style', plugin_dir_url(__FILE__).'/bridgegame.css');

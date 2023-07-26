@@ -1,6 +1,6 @@
 //Canvas definition:
 
-function reset_game() {
+function reset_game(rootPath) {
     const Boards = document.querySelectorAll("canvas");
     var canvas = Boards[0];
     var canvasHand = Boards[1];
@@ -22,16 +22,16 @@ function reset_game() {
     const CS = new Image();
     const CH = new Image();
     const CD = new Image();
-    CC.src = "images/Character_Clubs.png";
-    CD.src = "images/Character_Diamonds.png";
-    CH.src = "images/Character_Hearts.png";
-    CS.src = "images/Character_Spades.png";
-    club.src = "images/klaver.png";
-    spade.src = "images/schop.png";
-    heart.src = "images/hart.png";
-    diamond.src = "images/ruit.png";
-    var collect = new Audio("sounds/pickupCoin.wav");
-    var fail = new Audio("sounds/buzzer-or-wrong-answer-20582.mp3");
+    CC.src = rootPath + "images/Character_Clubs.png";
+    CD.src = rootPath + "images/Character_Diamonds.png";
+    CH.src = rootPath + "images/Character_Hearts.png";
+    CS.src = rootPath + "images/Character_Spades.png";
+    club.src = rootPath + "images/klaver.png";
+    spade.src = rootPath + "images/schop.png";
+    heart.src = rootPath + "images/hart.png";
+    diamond.src = rootPath + "images/ruit.png";
+    var collect = new Audio(rootPath + "sounds/pickupCoin.wav");
+    var fail = new Audio(rootPath + "sounds/buzzer-or-wrong-answer-20582.mp3");
     var lastUpdate = Date.now();
 
     //Variables:

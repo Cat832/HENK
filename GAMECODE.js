@@ -33,6 +33,7 @@ function reset_game(rootPath) {
     var collect = new Audio(rootPath + "sounds/pickupCoin.wav");
     var fail = new Audio(rootPath + "sounds/buzzer-or-wrong-answer-20582.mp3");
     var lastUpdate = Date.now();
+    var images = [club, spade, heart, diamond, CC, CS, CH, CD];
 
     //Variables:
 
@@ -57,7 +58,7 @@ function reset_game(rootPath) {
     var state = "Change Card";
     var card;
 
-    console.warn("Requirers JavaScript to run");
+    console.warn("Requires JavaScript to run");
 
 
     function returnColor(color, player) {
@@ -298,5 +299,15 @@ function reset_game(rootPath) {
 
     }
 
-    animate();
+    const delayStartInterval = setInterval(function () 
+    { 
+        images.forEach(element => {
+            if (!element.complete) {
+                return;
+            }
+        }); 
+
+        clearInterval(delayStartInterval);
+        animate();
+    }, 250)
 }

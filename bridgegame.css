@@ -1,9 +1,4 @@
-body {
-    cursor: url("images/cursor.png"), auto;
-    margin: 8px;
-}
-
-html {
+.hand {
     cursor: url("images/cursor.png"), url("images/cursor.png"), auto;
 }
 

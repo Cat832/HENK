@@ -150,16 +150,17 @@ function reset_game(rootPath) {
             }
 
             this.update = () => {
-                this.deltaTime = Date.now() - lastUpdate;
                 this.draw();
                 if (!this.stop) { this.y += this.vy; }
 
                 //Collision between player
                 if (custom.rectCollide(this.x, this.y, this.w, this.h, player.x, player.y, player.w, player.h)) {
                     if (custom.bridgeFit(this.card, hand[0], trump)) {
+                        score++;
                         refreshHand();
                         collect.play();
                     } else {
+                        score--;
                         fail.play();
                     }
                     this.refresh();

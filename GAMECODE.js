@@ -27,8 +27,8 @@ function reset_game(rootPath) {
     CH.src = rootPath + "images/Character_Hearts.png";
     CS.src = rootPath + "images/Character_Spades.png";
     club.src = rootPath + "images/klaver.png";
-    spade.src = rootPath + "images/schop.png";
-    heart.src = rootPath + "images/hart.png";
+    spade.src = rootPath + "images/Schop.png";
+    heart.src = rootPath + "images/Hart.png";
     diamond.src = rootPath + "images/ruit.png";
     var collect = new Audio(rootPath + "sounds/pickupCoin.wav");
     var fail = new Audio(rootPath + "sounds/buzzer-or-wrong-answer-20582.mp3");

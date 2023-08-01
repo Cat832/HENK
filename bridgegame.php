@@ -20,8 +20,7 @@ function bridgegame_add() {
         <h1 id="score"></h1>
     </div>
     <button onclick="reset_game(\'' . plugin_dir_url(__FILE__) . '\')">
-        <img src="' . plugin_dir_url(__FILE__) . 'images/Hart.png"/>
-        Click me to start game
+        Start game!
     </button>';
 }
 

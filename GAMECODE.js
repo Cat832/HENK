@@ -172,7 +172,7 @@ function reset_game(rootPath) {
                 if (this.y > 500) {
                     this.y += 10;
                     this.stop = true;
-                }
+                }  
             }
         }
     }

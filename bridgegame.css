@@ -2,14 +2,52 @@
     cursor: url("images/cursor.png"), url("images/cursor.png"), auto;
 }
 
+* {
+    font-family: sans-serif;
+}
 canvas {
-    border: 1px solid black;
+    border: 3px solid black;
+}
+
+.tutorial {
+    margin-left: 20px;
+}
+
+h1, h2, h3, p {
+    font-size: medium;
+    margin: 0
+}
+
+li {
+    margin-left: 40px;
 }
 
 .centerer {
     width: 100%;
     justify-content: center;
     display: flex;
+}
+
+.game.hand {
+    width: 800px;
+    height: 500px;
+}
+
+#mutebutton {
+    font-size: larger;
+}
+
+input[type="range"] {
+    margin: 0;
+    height: 30px;
+}
+
+.centererhand {
+    position: absolute;
+    left: 35%;
+    transform: translate(-50%, 0);
+    display: flex;
+    width: fit-content;
 }
 
 button {

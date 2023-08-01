@@ -38,8 +38,8 @@ function reset_game(rootPath) {
   CH.src = rootPath + "images/Character_Hearts.png";
   CS.src = rootPath + "images/Character_Spades.png";
   club.src = rootPath + "images/klaver.png";
-  spade.src = rootPath + "images/schop.png";
-  heart.src = rootPath + "images/hart.png";
+  spade.src = rootPath + "images/Schop.png";
+  heart.src = rootPath + "images/Hart.png";
   diamond.src = rootPath + "images/ruit.png";
   var collect = new Audio(rootPath + "sounds/pickupCoin.wav");
   var fail = new Audio(rootPath + "sounds/buzzer-or-wrong-answer-20582.mp3");
@@ -321,25 +321,32 @@ function reset_game(rootPath) {
   }
 
   //Animation:
+  var start; // start of frame rendered last
 
-  function animate() {
+  function animate(timeStamp) {
+    if (start === undefined) {
+      start = timeStamp;
+    }
+    const elapsed = timeStamp - start;
+
+    if (elapsed >= 50) {
+      c.clearRect(0, 0, 800, 500);
+      h.clearRect(0, 0, 180, 100);
+
+      document.getElementById("score").innerHTML = Math.round(score * 10) / 10;
+
+      for (const card of cards) {
+        card.update();
+      }
+      for (const handCard of handCards) {
+        handCard.update();
+      }
+      color = trump;
+      refreshCircles();
+      player.update();
+      start = timeStamp;
+    }
     requestAnimationFrame(animate);
-    c.clearRect(0, 0, 800, 500);
-    h.clearRect(0, 0, 180, 100);
-
-    //Calculate deltatime
-    lastUpdate = Date.now();
-
-    document.getElementById("score").innerHTML = Math.round(score * 10) / 10;
-    for (const card of cards) {
-      card.update();
-    }
-    for (const handCard of handCards) {
-      handCard.update();
-    }
-    color = trump;
-    refreshCircles();
-    player.update();
   }
 
   const delayStartInterval = setInterval(function () {
@@ -350,6 +357,6 @@ function reset_game(rootPath) {
     });
 
     clearInterval(delayStartInterval);
-    animate();
+    requestAnimationFrame(animate);
   }, 250);
 }

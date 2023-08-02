@@ -38,7 +38,7 @@ function bridgegame_add() {
     <div class="centererhand">
         <input type="range" min="4" max="10">
         <button onclick="mute()" id="mutebutton">🔇</button>
-        <button onclick="reset_game('./')">Start game</button>
+        <button onclick="reset_game(\'' . plugin_dir_url(__FILE__) . '\')">Start game</button>
         <canvas class="hand" width="180" height="80"></canvas>
         <div id="ui-text" class="score-div">
             <h1 id="score">0</h1>

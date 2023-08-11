@@ -329,7 +329,7 @@ function reset_game(rootPath) {
     }
     const elapsed = timeStamp - start;
 
-    if (elapsed >= 50) {
+    if (elapsed >= 16) { 
       c.clearRect(0, 0, 800, 500);
       h.clearRect(0, 0, 180, 100);
 

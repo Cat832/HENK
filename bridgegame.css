@@ -2,6 +2,7 @@
     cursor: url("images/cursor.png"), url("images/cursor.png"), auto;
 }
 
+
 * {
     font-family: sans-serif;
 }
@@ -26,6 +27,19 @@ li {
     width: 100%;
     justify-content: center;
     display: flex;
+}
+
+.title {
+    font-size: 30px;
+}
+
+.description {
+    font-size: 10px;
+}
+
+.empty {
+    width: auto;
+    height: 10px;
 }
 
 .game.hand {

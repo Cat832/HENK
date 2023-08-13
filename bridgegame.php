@@ -21,10 +21,7 @@ function bridgegame_add() {
             <div id="ui-text" class="score-div">
                 <h1 id="score">0</h1>
             </div>
-        </div>
-        <button onclick="reset_game(\'' . plugin_dir_url(__FILE__) . '\')">
-            Start game!
-        </button>';
+        </div>';
 }
 
 wp_enqueue_style('bridgegame_style', plugin_dir_url(__FILE__).'bridgegame.css');

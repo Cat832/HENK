@@ -50,6 +50,10 @@ li {
     font-size: larger;
 }
 
+.game-holder {
+    width: fit-content;
+}
+
 input[type="range"] {
     margin: 0;
     height: 30px;

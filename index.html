@@ -15,7 +15,19 @@
 
 <body>
     <div class="centerer">
-        <canvas class="game hand"></canvas>
+        <div class="game-holder">
+            <canvas class="game hand"></canvas>
+            <div class="centererhand">
+                <input type="range" min="4" max="10">
+                <button onclick="mute()" id="mutebutton">🔇</button>
+                <button onclick="reset_game('./')">Start game</button>
+                <canvas class="hand" width="180" height="80"></canvas>
+                <div id="ui-text" class="score-div">
+                    <h1 id="score">0</h1>
+                    <!-- <h1 id="lives">5/5</h1> -->
+                </div>
+            </div>
+        </div>
         <div class="tutorial">
             <div class="title"><span>Bridgegame!</span></div>
             <div class="description"><span>Door pepijn</span></div>
@@ -30,16 +42,6 @@
             <div class="helpfull"><span>Kleuren(&heartsuit;&spadesuit;&diamondsuit;&clubsuit;) horen bij elkaar</span></div>
             <div class="helpfull"><span>Die kaart die je pakt moet bij de eerte kaart van je hand horen</span></div>
             <div class="helpfull"><span>En de troef sttat op je mandje</span></div>
-        </div>
-    </div>
-    <div class="centererhand">
-        <input type="range" min="4" max="10">
-        <button onclick="mute()" id="mutebutton">🔇</button>
-        <button onclick="reset_game('./')">Start game</button>
-        <canvas class="hand" width="180" height="80"></canvas>
-        <div id="ui-text" class="score-div">
-            <h1 id="score">0</h1>
-            <!-- <h1 id="lives">5/5</h1> -->
         </div>
     </div>
     <script src="GAMECODE.js"></script>

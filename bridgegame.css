@@ -29,6 +29,12 @@ li {
     display: flex;
 }
 
+.center-children-vert {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* To align vertically, if needed */
+}
+
 .title {
     font-size: 30px;
 }

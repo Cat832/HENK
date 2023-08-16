@@ -1,6 +1,4 @@
-//Canvas definition:
-
-const muteButton = document.getElementById("mutebutton");
+//Canvas definition:const muteButton = document.getElementById("mutebutton");
 let muted = false;
 
 function mute() {
@@ -11,16 +9,15 @@ function mute() {
 function reset_game(rootPath) {
   const Boards = document.querySelectorAll("canvas");
   /**@type { HTMLInputElement } */
-  const slider = document.querySelector('input[type="range"]');
-  let cardAmount = slider.valueAsNumber;
-  var canvas = Boards[0];
-  var canvasHand = Boards[1];
+  let cardAmount = 3;
+  let canvas = Boards[0];
+  let canvasHand = Boards[1];
   canvasHand.height = 80;
   canvasHand.width = 180;
   canvas.height = 500;
   canvas.width = 800;
-  var h = canvasHand.getContext("2d");
-  var c = canvas.getContext("2d");
+  let h = canvasHand.getContext("2d");
+  let c = canvas.getContext("2d");
   h.lineWidth = 5;
   h.font = "20px Arial";
   c.lineWidth = 3;
@@ -41,10 +38,10 @@ function reset_game(rootPath) {
   spade.src = rootPath + "images/Schop.png";
   heart.src = rootPath + "images/Hart.png";
   diamond.src = rootPath + "images/ruit.png";
-  var collect = new Audio(rootPath + "sounds/pickupCoin.wav");
-  var fail = new Audio(rootPath + "sounds/buzzer-or-wrong-answer-20582.mp3");
-  var lastUpdate = Date.now();
-  var images = [club, spade, heart, diamond, CC, CS, CH, CD];
+  let collect = new Audio(rootPath + "sounds/pickupCoin.wav");
+  let fail = new Audio(rootPath + "sounds/buzzer-or-wrong-answer-20582.mp3");
+  let lastUpdate = Date.now();
+  let images = [club, spade, heart, diamond, CC, CS, CH, CD];
 
   //Variables:
 
@@ -55,18 +52,30 @@ function reset_game(rootPath) {
     }
   }
 
-  const symbols = ["spade", "diamond", "heart", "club"];
+  function generateValue() {
+    let value = Math.floor(Math.random() * 13) + 2;
+    switch (value) {
+      case 11:
+        return "J";
+      case 12:
+        return "Q";
+      case 13:
+        return "K";
+      case 14:
+        return "A";
+      default:
+        return JSON.stringify(value);
+    }
+  }
 
   const hand = [];
   const colors = ["red", "orange", "black", "gray"];
   var trump = custom.math.selectRandom(colors);
   for (var i = 0; i < 3; i++) {
     hand.push(
-      new innerValue(
-        custom.math.selectRandom(colors),
-        custom.math.roundRandom(9) + 2
-      )
+      playerHand[0]
     );
+    playerHand.splice(0, 1);
   }
   const refresh_Hand = document.querySelector("button#handReset");
   var color = trump;
@@ -106,35 +115,20 @@ function reset_game(rootPath) {
   }
 
   //Classes:
-  function refreshCircles() {
+  function backToStart() {
     //Check if every circle is stopped
     for (const card of cards) {
       if (!card.stop) {
         return;
       }
     }
-    trump = custom.math.selectRandom(colors);
     //Refresh them
     for (const card of cards) {
       card.refresh();
     }
   }
 
-  function generateValue() {
-    let value = Math.floor(Math.random() * 13) + 2;
-    switch (value) {
-      case 11:
-        return "J";
-      case 12:
-        return "Q";
-      case 13:
-        return "K";
-      case 14:
-        return "A";
-      default:
-        return JSON.stringify(value);
-    }
-  }
+  
 
   class Card {
     constructor(x, y, r, player = { x: 0, y: 0, w: 50, h: 50 }, col = "red") {
@@ -163,7 +157,7 @@ function reset_game(rootPath) {
         this.stop = false;
         this.vy = Math.floor(Math.random() * 4) + 2;
         //Start the next loop (if all the cards are picked up or on the ground)
-        refreshCircles();
+        backToStart();
       };
 
       this.draw = () => {
@@ -202,17 +196,13 @@ function reset_game(rootPath) {
           )
         ) {
           if (custom.bridgeFit(this.card, hand[0], trump)) {
-            // score++;
             refreshHand();
             if (!muted) {
               collect.play();
             }
-            score += this.price;
-          } else {
-            score -= this.price;
-            if (!muted) {
-              fail.play();
-            }
+            score++;
+          } else if (!muted) {
+            fail.play();
           }
           this.refresh();
           this.stop = true;
@@ -302,13 +292,16 @@ function reset_game(rootPath) {
   }
 
   function refreshHand() {
-    //Refresh the hand
-    for (var i = 0; i < hand.length; i++) {
-      hand[i] = new innerValue(
-        custom.math.selectRandom(colors),
-        custom.math.roundRandom(9) + 2
-      );
-    }
+    /*
+    [{color: "red", value:"8"}, {color: "orange", value:"12"}, {color:"gray", value:"K"}]
+    should become:
+    [{color: "orange", value:"12"}, {color:"gray", value:"K"}, playerHand[0]]
+    */
+    hand.splice(0, 1);
+    //[{color: "orange", value:"12"}, {color:"gray", value:"K"}]
+    hand.push(playerHand[0])
+    //[{color: "orange", value:"12"}, {color:"gray", value:"K"}, playerHand[0]]
+    playerHand.splice(0, 1);
   }
   //Events:
   var interval;
@@ -358,7 +351,7 @@ function reset_game(rootPath) {
         handCard.update();
       }
       color = trump;
-      refreshCircles();
+      backToStart();
       player.update();
       start = timeStamp;
     }

@@ -1,10 +1,3 @@
-class Vector {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-}
-
 function log(x) {
     console.log(JSON.stringify(x));
 }
@@ -64,16 +57,8 @@ var custom = {
     },
     //Check if cards "fit" like in bridge
     bridgeFit: function (card1, card2, trump) {
-        if (trump == false) {
-            if (card1.color == card2.color) {
-                return true;
-            }
-        } else {
-            if (card1.color == trump || card2.color == card1.color) {
-                return true;
-            }
-        }
-        return false;
+        if (card2.color === trump) return true;
+        return card1.color == card2.color;  
     },
 }
 

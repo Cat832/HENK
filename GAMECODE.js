@@ -330,7 +330,7 @@ function reset_game(rootPath) {
       h.clearRect(0, 0, 180, 100);
 
       document.getElementById("score").innerHTML = Math.round(score * 10) / 10;
-      document.querySelector(".description.gc").innerHTML = gameHand
+      //document.querySelector(".description.gc").innerHTML = gameHand
 
       for (const card of cards) {
         card.update();
@@ -357,6 +357,7 @@ function reset_game(rootPath) {
   }
 
   //setTimeOut()??? I don't know maar ik zeg het ff voor het geval dat je bedoeling was
+  // Nee! Een image kan dan nog niet klaar met laden zijn en dan moet hij het nog een keer proberen.
   const delayStartInterval = setInterval(function () {
     images.forEach((element) => {
       if (!element.complete) {

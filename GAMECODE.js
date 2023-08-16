@@ -120,9 +120,25 @@ function reset_game(rootPath) {
     }
   }
 
+  function generateValue() {
+    let value = Math.floor(Math.random() * 13) + 2;
+    switch (value) {
+      case 11:
+        return "J";
+      case 12:
+        return "Q";
+      case 13:
+        return "K";
+      case 14:
+        return "A";
+      default:
+        return JSON.stringify(value);
+    }
+  }
+
   class Card {
     constructor(x, y, r, player = { x: 0, y: 0, w: 50, h: 50 }, col = "red") {
-      this.value = JSON.stringify(Math.floor(Math.random() * 9) + 2);
+      this.value = 
       this.x = Math.random() * 700 + 50;
       this.y = y;
       this.w = 50;
@@ -140,7 +156,7 @@ function reset_game(rootPath) {
       this.refresh = () => {
         //Render again
         this.onRender();
-        this.value = JSON.stringify(Math.floor(Math.random() * 9) + 2);
+        this.value = generateValue();
         this.x = Math.random() * 800;
         this.card.value = this.value;
         this.y = y;

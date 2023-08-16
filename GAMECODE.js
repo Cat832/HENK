@@ -53,19 +53,9 @@ function reset_game(rootPath) {
   }
 
   function generateValue() {
-    let value = Math.floor(Math.random() * 13) + 2;
-    switch (value) {
-      case 11:
-        return "J";
-      case 12:
-        return "Q";
-      case 13:
-        return "K";
-      case 14:
-        return "A";
-      default:
-        return JSON.stringify(value);
-    }
+    let returning = [gameHand[0].value, gameHand[0].color];
+    gameHand.splice(0, 1);
+    return returning;
   }
 
   const hand = [];
@@ -132,27 +122,25 @@ function reset_game(rootPath) {
 
   class Card {
     constructor(x, y, r, player = { x: 0, y: 0, w: 50, h: 50 }, col = "red") {
-      this.value = 
+      this.generatedValue = generateValue(); //It's sucks to do this....
+      this.value = this.generatedValue[0];
+      this.color = this.generatedValue[1];
       this.x = Math.random() * 700 + 50;
       this.y = y;
       this.w = 50;
       this.h = 50;
       this.vy = Math.random() * 4 + 2;
-      this.color = col;
       this.stop = false;
       this.addition = 20;
-      this.price;
       this.card = new innerValue(this.color, this.value);
-      this.onRender = () => {
-        this.price = 5;
-      };
-      this.onRender();
       this.refresh = () => {
         //Render again
-        this.onRender();
-        this.value = generateValue();
+        this.generatedValue = generateValue();
+        this.value = this.generatedValue[0];
+        this.color = this.generatedValue[1];
         this.x = Math.random() * 800;
         this.card.value = this.value;
+        this.card.color = this.color;
         this.y = y;
         this.stop = false;
         this.vy = Math.floor(Math.random() * 4) + 2;
@@ -287,7 +275,6 @@ function reset_game(rootPath) {
   const cards = [];
   for (let i = 0; i < cardAmount; i++) {
     var card = new Card(i, -60, i, player, colors[i]);
-    card.onRender();
     cards.push(card);
   }
 
@@ -343,6 +330,7 @@ function reset_game(rootPath) {
       h.clearRect(0, 0, 180, 100);
 
       document.getElementById("score").innerHTML = Math.round(score * 10) / 10;
+      document.querySelector(".description.gc").innerHTML = gameHand
 
       for (const card of cards) {
         card.update();
@@ -356,8 +344,19 @@ function reset_game(rootPath) {
       start = timeStamp;
     }
     requestAnimationFrame(animate);
+    /* 
+    
+    */
+    if (playerHand.length === 0 || gameHand.length === 0) {
+      //End screen
+      c.clearRect(0, 0, 800, 500);
+      c.font = "50px Arial";
+      c.fillText("End of game!", 30, 200);
+      return
+    }
   }
 
+  //setTimeOut()??? I don't know maar ik zeg het ff voor het geval dat je bedoeling was
   const delayStartInterval = setInterval(function () {
     images.forEach((element) => {
       if (!element.complete) {
@@ -366,6 +365,7 @@ function reset_game(rootPath) {
     });
 
     clearInterval(delayStartInterval);
-    requestAnimationFrame(animate);
+    animate();
   }, 250);
+
 }

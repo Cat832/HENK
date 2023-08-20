@@ -8,8 +8,15 @@ function mute() {
 
 function reset_game(rootPath) {
   const Boards = document.querySelectorAll("canvas");
-  /**@type { HTMLInputElement } */
+  let deck = shuffleDeck();
+  console.log(deck.length);
+  gameHand = deck.slice(0, 13);
+  deck.splice(0, 13);
+  playerHand = [...deck];
+  console.log(playerHand)
+  console.log(gameHand)
   let cardAmount = 3;
+  let gameComplete = false;
   let canvas = Boards[0];
   let canvasHand = Boards[1];
   canvasHand.height = 80;
@@ -53,6 +60,7 @@ function reset_game(rootPath) {
   }
 
   function generateValue() {
+    if (gameHand.length == 0) return [0, "undefined"];
     let returning = [gameHand[0].value, gameHand[0].color];
     gameHand.splice(0, 1);
     return returning;
@@ -62,9 +70,7 @@ function reset_game(rootPath) {
   const colors = ["red", "orange", "black", "gray"];
   var trump = custom.math.selectRandom(colors);
   for (var i = 0; i < 3; i++) {
-    hand.push(
-      playerHand[0]
-    );
+    hand.push(playerHand[0]);
     playerHand.splice(0, 1);
   }
   const refresh_Hand = document.querySelector("button#handReset");
@@ -118,8 +124,6 @@ function reset_game(rootPath) {
     }
   }
 
-  
-
   class Card {
     constructor(x, y, r, player = { x: 0, y: 0, w: 50, h: 50 }, col = "red") {
       this.generatedValue = generateValue(); //It's sucks to do this....
@@ -129,23 +133,27 @@ function reset_game(rootPath) {
       this.y = y;
       this.w = 50;
       this.h = 50;
-      this.vy = Math.random() * 4 + 2;
+      this.vy = 2;
       this.stop = false;
       this.addition = 20;
       this.card = new innerValue(this.color, this.value);
+      this.roundSucces = false;
       this.refresh = () => {
         //Render again
-        this.generatedValue = generateValue();
-        this.value = this.generatedValue[0];
-        this.color = this.generatedValue[1];
+        if (this.roundSucces) {
+          score++;
+          this.generatedValue = generateValue();
+          this.value = this.generatedValue[0];
+          this.color = this.generatedValue[1];
+        }
+        this.roundSucces = false;
+        
         this.x = Math.random() * 800;
         this.card.value = this.value;
         this.card.color = this.color;
         this.y = y;
         this.stop = false;
-        this.vy = Math.floor(Math.random() * 4) + 2;
-        //Start the next loop (if all the cards are picked up or on the ground)
-        backToStart();
+        refreshHand();
       };
 
       this.draw = () => {
@@ -183,12 +191,11 @@ function reset_game(rootPath) {
             player.h
           )
         ) {
-          if (custom.bridgeFit(this.card, hand[0], trump)) {
-            refreshHand();
+          if (custom.bridgeFit(this.card, hand, trump)) {
+            this.roundSucces = true;
             if (!muted) {
               collect.play();
             }
-            score++;
           } else if (!muted) {
             fail.play();
           }
@@ -286,7 +293,7 @@ function reset_game(rootPath) {
     */
     hand.splice(0, 1);
     //[{color: "orange", value:"12"}, {color:"gray", value:"K"}]
-    hand.push(playerHand[0])
+    hand.push(playerHand[0]);
     //[{color: "orange", value:"12"}, {color:"gray", value:"K"}, playerHand[0]]
     playerHand.splice(0, 1);
   }
@@ -325,13 +332,19 @@ function reset_game(rootPath) {
     }
     const elapsed = timeStamp - start;
 
-    if (elapsed >= 16) { 
+    if (gameComplete) return;
+
+    //Javascript doet raar now a days....
+
+    if (elapsed >= 16 && !gameComplete) {
       c.clearRect(0, 0, 800, 500);
       h.clearRect(0, 0, 180, 100);
 
-      document.getElementById("score").innerHTML = Math.round(score * 10) / 10;
-      //document.querySelector(".description.gc").innerHTML = gameHand
+      // document.getElementById("score").innerHTML = `${Math.round(score * 10) / 10}/13`
+      document.getElementById("score").innerHTML = `${score}/13`;
 
+      
+      
       for (const card of cards) {
         card.update();
       }
@@ -347,12 +360,14 @@ function reset_game(rootPath) {
     /* 
     
     */
+    document.querySelector(".description.gc").innerHTML = gameHand.length;
+    document.querySelector(".description.pc").innerHTML = playerHand.length;
     if (playerHand.length === 0 || gameHand.length === 0) {
       //End screen
       c.clearRect(0, 0, 800, 500);
       c.font = "50px Arial";
       c.fillText("End of game!", 30, 200);
-      return
+      gameComplete = true;
     }
   }
 
@@ -368,5 +383,4 @@ function reset_game(rootPath) {
     clearInterval(delayStartInterval);
     animate();
   }, 250);
-
 }

@@ -12,16 +12,15 @@ License: GPL2
 
 function bridgegame_add() {
     return '
-        <canvas class="game hand"></canvas>
-        <div class="center-children-vert">
-            <button onclick="mute()" id="mutebutton">🔇</button>
-            <button onclick="reset_game(\'' . plugin_dir_url(__FILE__) . '\')">Start game with...</button>
-            <input type="range" value="4" min="4" max="10" oninput="this.nextElementSibling.value = this.value"><output>4</output><span>&nbsp;cards</span>
-            <canvas class="hand" width="180" height="80"></canvas>
-            <div id="ui-text" class="score-div">
-                <h1 id="score">0</h1>
-            </div>
-        </div>';
+    <canvas class="game hand" width="800" height="500"></canvas>
+    <div class="center-children-vert">
+        <button onclick="mute()" id="mutebutton">🔇</button>
+        <button onclick="reset_game(\'' . plugin_dir_url(__FILE__) . '\')">Start game!</button>    
+        <canvas class="hand" width="180" height="80"></canvas>
+        <div id="ui-text" class="score-div">
+            <h1 id="score">0/13</h1>        
+        </div>
+    </div>';
 }
 
 wp_enqueue_style('bridgegame_style', plugin_dir_url(__FILE__).'bridgegame.css');

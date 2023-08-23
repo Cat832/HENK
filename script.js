@@ -2,6 +2,26 @@ function log(x) {
   console.log(JSON.stringify(x));
 }
 
+function highestValue(value1, value2) {
+  const scale = {
+    2: 0,
+    3: 1,
+    4: 2,
+    5: 3,
+    6: 4,
+    7: 5,
+    8: 6,
+    9: 7,
+    10: 8,
+    J: 9,
+    Q: 10,
+    K: 11,
+    A: 12,
+  };
+
+  return (scale[value1] > scale[value2]);
+}
+
 var custom = {
   math: {
     negRandom: function () {
@@ -65,6 +85,7 @@ var custom = {
   },
   //Check if cards "fit" like in bridge
   bridgeFit: function (card, hand, trump) {
+    console.log(card, hand, trump);
     let highest = hand[0]; //Temporarily, so we have something to compare
     let leadingColor = hand[0].color;
     hand.forEach((handCard) => {
@@ -75,11 +96,11 @@ var custom = {
     if (card.color != leadingColor) return false
     hand.forEach((handCard) => {
       if (handCard.color == leadingColor) {
-        if (Number(handCard.value) == Number(highest.value)) {
+        if (highestValue(highest.value, handCard.value)) {
           highest = handCard;
         }
       }
     });
-    return Number(card.value) > Number(highest.value);
+    return highestValue(card.value, highest.value);
   },
 };

@@ -26,6 +26,7 @@ function bridgegame_add() {
 
 wp_enqueue_style('bridgegame_style', plugin_dir_url(__FILE__).'bridgegame.css');
 wp_enqueue_script('bridgegame_script', plugin_dir_url(__FILE__).'script.js');
+wp_enqueue_script('bridgegame_script', plugin_dir_url(__FILE__).'games.js');
 wp_enqueue_script('bridgegame_gamecode', plugin_dir_url(__FILE__).'GAMECODE.js');
 
 add_shortcode('bridgegame', 'bridgegame_add'); 

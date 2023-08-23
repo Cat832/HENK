@@ -85,6 +85,7 @@ var custom = {
   },
   //Check if cards "fit" like in bridge
   bridgeFit: function (card, hand, trump) {
+    console.log(card, hand, trump);
     let highest = hand[0]; //Temporarily, so we have something to compare
     let leadingColor = hand[0].color;
     hand.forEach((handCard) => {

@@ -286,8 +286,8 @@ function reset_game(rootPath) {
   }
 
   function refreshHand() {    
-    hand = playerHand.splice(0, 2);
-    playerHand.splice(0, 2);
+    hand = playerHand.splice(0, 3);
+    playerHand.splice(0, 3);
   }
   //Events:
   var interval;

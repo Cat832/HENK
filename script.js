@@ -88,7 +88,8 @@ var custom = {
     console.log(card, hand, trump);
     let highest = hand[0]; //Temporarily, so we have something to compare
     let leadingColor = hand[0].color;
-    hand.forEach((handCard) => {
+    const allCards = [...hand, card]
+    allCards.forEach((handCard) => {
       if (handCard.color == trump) {
         leadingColor = trump;
       }

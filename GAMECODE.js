@@ -110,70 +110,70 @@ function reset_game(rootPath) {
     }
   }
 
-  //Classes:
-  function backToStart() {
-    //Check if every circle is stopped
-    for (const card of cards) {
-      if (!card.stop) {
-        return;
-      }
-    }
-    //Refresh them
-    for (const card of cards) {
-      card.refresh();
-    }
-  }
-
-class CardsManager {
-  round = 0;
+ class CardsManager {
+  round = 1;
+  positions = [];
 
   constructor(cards) {
     this.cards = cards;
   }
 
+  refresh() {
+    this.cards.forEach(card => {
+      card.refresh();
+    });
+  }
+
   reset() {
     this.round++;
 
-    refreshHand();
+    this.positions = [];
+    
+    hand = playerHand.splice(0, 3);
+
     this.cards.forEach(card => {
       card.reset();
-    });
+    });    
+  }
+
+  positionAllowed(x) {
+    const midPoint = x + 25; // 25 = card width
+    let isAllowed = !this.positions.some(position => (midPoint < position + 25) && (midPoint > position - 25));
+    if (isAllowed)
+    {
+      this.positions.push(midPoint);
+    }
+    return isAllowed;
   }
 }
 
   class Card {
-    constructor(x, y, r, player = { x: 0, y: 0, w: 50, h: 50 }, col = "red", cardsManager) {
+    constructor(player, col = "red", cardsManager) {
       this.cardsManager = cardsManager;
-      this.generatedValue = generateValue(); //It's sucks to do this....
-      this.value = this.generatedValue[0];
-      this.color = this.generatedValue[1];
-      this.x = Math.random() * 700 + 50;
-      this.y = y;
+            
       this.w = 50;
       this.h = 50;
       this.vy = 2;
-      this.stop = false;
       this.addition = 20;
       this.card = new innerValue(this.color, this.value);
-      this.roundSucces = false;
+
       this.refresh = () => {
-        //Render again
-        if (this.roundSucces) {
-          score++;
-          this.generatedValue = generateValue();
-          this.value = this.generatedValue[0];
-          this.color = this.generatedValue[1];
-        }        
-        this.cardsManager.reset();
+        this.generatedValue = generateValue();
+        this.value = this.generatedValue[0];
+        this.color = this.generatedValue[1];
       };
-      
+
       this.reset = () => {
         this.roundSucces = false;
 
-        this.x = Math.random() * 800;
+        let xIsSet = false;
+        while (!xIsSet) {          
+          this.x = Math.random() * 700 + 50;
+          xIsSet = this.cardsManager.positionAllowed(this.x);
+        }
         this.card.value = this.value;
         this.card.color = this.color;
-        this.y = y;
+        this.y = -60;
         this.stop = false;
       }
 
@@ -213,22 +213,21 @@ class CardsManager {
           )
         ) {
           if (custom.bridgeFit(this.card, hand, trump)) {
-            this.roundSucces = true;
+            score++;
             if (!muted) {
               collect.play();
             }
           } else if (!muted) {
             fail.play();
           }
-          this.refresh();
           this.stop = true;
-          card = this.color;
+          this.refresh();
+          this.cardsManager.reset();
         }
 
         //Collision between ground
         if (this.y > 500) {
-          this.y += 10;
-          this.stop = true;
+          this.cardsManager.reset();
         }
       };
     }
@@ -303,13 +302,12 @@ class CardsManager {
   const cards = [];
   const cardsManager = new CardsManager(cards);
   for (let i = 0; i < cardAmount; i++) {
-    var card = new Card(i, -60, i, player, colors[i], cardsManager);
+    var card = new Card(player, colors[i], cardsManager);
     cards.push(card);
   }
+  cardsManager.refresh();
+  cardsManager.reset();
 
-  function refreshHand() {    
-    hand = playerHand.splice(0, 3);
-  }
   //Events:
   var interval;
 
@@ -347,25 +345,23 @@ class CardsManager {
 
     if (gameComplete) return;
 
-    //Javascript doet raar now a days....
-
     if (elapsed >= 16 && !gameComplete) {
       c.clearRect(0, 0, 800, 500);
       h.clearRect(0, 0, 180, 100);
+      
+      document.getElementById("score").innerHTML = `${score}/13`;
 
-      // document.getElementById("score").innerHTML = `${Math.round(score * 10) / 10}/13`
-      document.getElementById("score").innerHTML = `${cardsManager.round} ${score}/13`;
-
-      //Pepijn heeft dit geprogrammeerd0
+      //Pepijn heeft dit geprogrammeerd!
 
       for (const card of cards) {
         card.update();
       }
+
       for (const handCard of handCards) {
         handCard.update();
       }
       color = trump;
-      //backToStart();
+
       player.update();
       start = timeStamp;
     }

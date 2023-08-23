@@ -100,6 +100,6 @@ var custom = {
         }
       }
     });
-    return highestValue(card.value>highest.value);
+    return highestValue(card.value, highest.value);
   },
 };

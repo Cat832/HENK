@@ -13,8 +13,8 @@ function reset_game(rootPath) {
   gameHand = deck.slice(0, 13);
   deck.splice(0, 13);
   playerHand = [...deck];
-  console.log(playerHand)
-  console.log(gameHand)
+  console.log(playerHand);
+  console.log(gameHand);
   let cardAmount = 3;
   let gameComplete = false;
   let canvas = Boards[0];
@@ -147,7 +147,7 @@ function reset_game(rootPath) {
           this.color = this.generatedValue[1];
         }
         this.roundSucces = false;
-        
+
         this.x = Math.random() * 800;
         this.card.value = this.value;
         this.card.color = this.color;
@@ -286,16 +286,18 @@ function reset_game(rootPath) {
   }
 
   function refreshHand() {
-    /*
-    [{color: "red", value:"8"}, {color: "orange", value:"12"}, {color:"gray", value:"K"}]
-    should become:
-    [{color: "orange", value:"12"}, {color:"gray", value:"K"}, playerHand[0]]
-    */
-    hand.splice(0, 1);
-    //[{color: "orange", value:"12"}, {color:"gray", value:"K"}]
-    hand.push(playerHand[0]);
-    //[{color: "orange", value:"12"}, {color:"gray", value:"K"}, playerHand[0]]
-    playerHand.splice(0, 1);
+    // /*
+    // [{color: "red", value:"8"}, {color: "orange", value:"12"}, {color:"gray", value:"K"}]
+    // should become:
+    // [{color: "orange", value:"12"}, {color:"gray", value:"K"}, playerHand[0]]
+    // */
+    // hand.splice(0, 1);
+    // //[{color: "orange", value:"12"}, {color:"gray", value:"K"}]
+    // hand.push(playerHand[0]);
+    // //[{color: "orange", value:"12"}, {color:"gray", value:"K"}, playerHand[0]]
+    // playerHand.splice(0, 1);
+    hand = playerHand.splice(0, 2);
+    playerHand.splice(0, 2);
   }
   //Events:
   var interval;
@@ -343,8 +345,8 @@ function reset_game(rootPath) {
       // document.getElementById("score").innerHTML = `${Math.round(score * 10) / 10}/13`
       document.getElementById("score").innerHTML = `${score}/13`;
 
-      
-      
+      //Pepijn heeft dit geprogrammeerd0
+
       for (const card of cards) {
         card.update();
       }

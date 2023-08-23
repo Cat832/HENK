@@ -66,7 +66,7 @@ function reset_game(rootPath) {
     return returning;
   }
 
-  const hand = [];
+  let hand = [];
   const colors = ["red", "orange", "black", "gray"];
   var trump = custom.math.selectRandom(colors);
   for (var i = 0; i < 3; i++) {
@@ -285,17 +285,7 @@ function reset_game(rootPath) {
     cards.push(card);
   }
 
-  function refreshHand() {
-    // /*
-    // [{color: "red", value:"8"}, {color: "orange", value:"12"}, {color:"gray", value:"K"}]
-    // should become:
-    // [{color: "orange", value:"12"}, {color:"gray", value:"K"}, playerHand[0]]
-    // */
-    // hand.splice(0, 1);
-    // //[{color: "orange", value:"12"}, {color:"gray", value:"K"}]
-    // hand.push(playerHand[0]);
-    // //[{color: "orange", value:"12"}, {color:"gray", value:"K"}, playerHand[0]]
-    // playerHand.splice(0, 1);
+  function refreshHand() {    
     hand = playerHand.splice(0, 2);
     playerHand.splice(0, 2);
   }

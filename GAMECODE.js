@@ -124,8 +124,26 @@ function reset_game(rootPath) {
     }
   }
 
+class CardsManager {
+  round = 0;
+
+  constructor(cards) {
+    this.cards = cards;
+  }
+
+  reset() {
+    this.round++;
+
+    refreshHand();
+    this.cards.forEach(card => {
+      card.reset();
+    });
+  }
+}
+
   class Card {
-    constructor(x, y, r, player = { x: 0, y: 0, w: 50, h: 50 }, col = "red") {
+    constructor(x, y, r, player = { x: 0, y: 0, w: 50, h: 50 }, col = "red", cardsManager) {
+      this.cardsManager = cardsManager;
       this.generatedValue = generateValue(); //It's sucks to do this....
       this.value = this.generatedValue[0];
       this.color = this.generatedValue[1];
@@ -145,7 +163,11 @@ function reset_game(rootPath) {
           this.generatedValue = generateValue();
           this.value = this.generatedValue[0];
           this.color = this.generatedValue[1];
-        }
+        }        
+        this.cardsManager.reset();
+      };
+      
+      this.reset = () => {
         this.roundSucces = false;
 
         this.x = Math.random() * 800;
@@ -153,8 +175,7 @@ function reset_game(rootPath) {
         this.card.color = this.color;
         this.y = y;
         this.stop = false;
-        refreshHand();
-      };
+      }
 
       this.draw = () => {
         //Draw the card
@@ -280,14 +301,14 @@ function reset_game(rootPath) {
   var player = new Player(0, 420, 50, 80, 0);
 
   const cards = [];
+  const cardsManager = new CardsManager(cards);
   for (let i = 0; i < cardAmount; i++) {
-    var card = new Card(i, -60, i, player, colors[i]);
+    var card = new Card(i, -60, i, player, colors[i], cardsManager);
     cards.push(card);
   }
 
   function refreshHand() {    
-    hand = playerHand.splice(0, 2);
-    playerHand.splice(0, 2);
+    hand = playerHand.splice(0, 3);
   }
   //Events:
   var interval;
@@ -333,7 +354,7 @@ function reset_game(rootPath) {
       h.clearRect(0, 0, 180, 100);
 
       // document.getElementById("score").innerHTML = `${Math.round(score * 10) / 10}/13`
-      document.getElementById("score").innerHTML = `${score}/13`;
+      document.getElementById("score").innerHTML = `${cardsManager.round} ${score}/13`;
 
       //Pepijn heeft dit geprogrammeerd0
 
@@ -344,7 +365,7 @@ function reset_game(rootPath) {
         handCard.update();
       }
       color = trump;
-      backToStart();
+      //backToStart();
       player.update();
       start = timeStamp;
     }

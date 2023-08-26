@@ -1,4 +1,3 @@
-//Canvas definition:const muteButton = document.getElementById("mutebutton");
 let muted = false;
 let debug = 1;
 
@@ -78,7 +77,6 @@ function reset_game(rootPath) {
     hand.push(playerHand[0]);
     playerHand.splice(0, 1);
   }
-  const refresh_Hand = document.querySelector("button#handReset");
   var color = trump;
   var score = 0;
   var state = "Change Card";
@@ -374,8 +372,6 @@ function reset_game(rootPath) {
     /* 
     
     */
-    document.querySelector(".description.gc").innerHTML = gameHand.length;
-    document.querySelector(".description.pc").innerHTML = playerHand.length;
     if (playerHand.length === 0 || gameHand.length === 0) {
       //End screen
       c.clearRect(0, 0, 800, 500);

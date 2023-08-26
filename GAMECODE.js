@@ -1,9 +1,10 @@
 //Canvas definition:const muteButton = document.getElementById("mutebutton");
 let muted = false;
+let debug = 1;
 
 function mute() {
-  muted = !muted;
-  muteButton.innerHTML = muted ? "🔊" : "🔇";
+  muted = !muted;  
+  document.getElementById("mutebutton").innerHTML = muted === false ? "🔊 " : "🔇 ";
 }
 
 function reset_game(rootPath) {
@@ -49,6 +50,10 @@ function reset_game(rootPath) {
   let fail = new Audio(rootPath + "sounds/buzzer-or-wrong-answer-20582.mp3");
   let lastUpdate = Date.now();
   let images = [club, spade, heart, diamond, CC, CS, CH, CD];
+
+  if (debug === 1) {
+    runTests();
+  }
 
   //Variables:
 

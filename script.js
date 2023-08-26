@@ -2,8 +2,9 @@ function log(x) {
   console.log(JSON.stringify(x));
 }
 
-function highestValue(value1, value2) {
+function firstHigherThanSecond(value1, value2) {
   const scale = {
+    0: -1, // Only used for making sure a card with this fake value with never be highest
     2: 0,
     3: 1,
     4: 2,
@@ -85,23 +86,74 @@ var custom = {
   },
   //Check if cards "fit" like in bridge
   bridgeFit: function (card, hand, trump) {
-    console.log(card, hand, trump);
-    let highest = hand[0]; //Temporarily, so we have something to compare
+    var card2str = function(value, color) {
+      return '{ "value": "' + value + '", "color": "' + color + '"}';
+    }
+    var s = 'tests.push(custom.bridgeFit(' + card2str(card.value, card.color) + ', [';
+    var first = true;
+    hand.forEach(handCard => {
+      if (first !== true) {
+        s = s + ", ";
+      }
+      s = s + card2str(handCard.value, handCard.color);
+      first = false;
+    });
+    s = s + '], "' + trump + '") === ';
+
+    var result = undefined;
     let leadingColor = hand[0].color;
     const allCards = [...hand, card]
-    allCards.forEach((handCard) => {
-      if (handCard.color == trump) {
+    allCards.forEach((card) => {
+      if (card.color === trump) {
         leadingColor = trump;
       }
     });
-    if (card.color != leadingColor) return false
-    hand.forEach((handCard) => {
-      if (handCard.color == leadingColor) {
-        if (highestValue(highest.value, handCard.value)) {
-          highest = handCard;
+    if (card.color !== leadingColor) {
+      result = false;
+    } else {
+      let highest = { "value": "0", "color": leadingColor };
+      hand.forEach((handCard) => {
+        if (handCard.color === leadingColor) {
+          if (firstHigherThanSecond(handCard.value, highest.value)) {
+            highest = handCard;
+          }
         }
-      }
-    });
-    return highestValue(card.value, highest.value);
-  },
-};
+      });
+      var result = firstHigherThanSecond(card.value, highest.value);
+    }
+    s = s + result + ");";
+
+    let debug = 1;
+    if (debug === 1) {
+      console.log(s);
+    }
+
+    return result;
+  }
+}
+
+function runTests() {
+  console.log("Testing...");
+  var tests = [];
+  tests.push(custom.bridgeFit({ "value": "7", "color": "gray" }, [{ "value": "9", "color": "gray" }, { "value": "3", "color": "black" }, { "value": "3", "color": "gray" }], "gray") === false);
+  tests.push(custom.bridgeFit({ "value": "Q", "color": "red" }, [{ "value": "7", "color": "red" }, { "value": "A", "color": "black" }, { "value": "5", "color": "gray" }], "black") === false);
+  tests.push(custom.bridgeFit({ "value": "J", "color": "orange" }, [{ "value": "5", "color": "red" }, { "value": "5", "color": "black" }, { "value": "2", "color": "gray" }], "black") === false);
+  tests.push(custom.bridgeFit({ "value": "4", "color": "gray" }, [{ "value": "K", "color": "red" }, { "value": "A", "color": "gray" }, { "value": "Q", "color": "gray" }], "black") === false);
+  tests.push(custom.bridgeFit({ "value": "6", "color": "gray" }, [{ "value": "8", "color": "gray" }, { "value": "9", "color": "black" }, { "value": "10", "color": "orange" }], "black") === false);
+  tests.push(custom.bridgeFit({ "value": "6", "color": "red" }, [{ "value": "2", "color": "red" }, { "value": "4", "color": "black" }, { "value": "10", "color": "red" }], "black") === false);
+  tests.push(custom.bridgeFit({ "value": "A", "color": "orange" }, [{ "value": "6", "color": "orange" }, { "value": "4", "color": "red" }, { "value": "4", "color": "orange" }], "black") === true);
+  tests.push(custom.bridgeFit({ "value": "Q", "color": "orange" }, [{ "value": "5", "color": "orange" }, { "value": "9", "color": "gray" }, { "value": "J", "color": "red" }], "black") === true);
+  tests.push(custom.bridgeFit({ "value": "K", "color": "gray" }, [{ "value": "7", "color": "gray" }, { "value": "K", "color": "black" }, { "value": "10", "color": "black" }], "black") === false);
+  tests.push(custom.bridgeFit({ "value": "J", "color": "black" }, [{ "value": "9", "color": "orange" }, { "value": "7", "color": "orange" }, { "value": "8", "color": "red" }], "black") === true);
+  tests.push(custom.bridgeFit({ "value": "10", "color": "red"}, [{ "value": "J", "color": "gray"}, { "value": "4", "color": "red"}, { "value": "6", "color": "gray"}], "red") === true);
+  tests.push(custom.bridgeFit({ "value": "2", "color": "black"}, [{ "value": "4", "color": "gray"}, { "value": "9", "color": "orange"}, { "value": "7", "color": "black"}], "red") === false);
+  tests.push(custom.bridgeFit({ "value": "4", "color": "orange"}, [{ "value": "10", "color": "orange"}, { "value": "7", "color": "gray"}, { "value": "7", "color": "orange"}], "red") === false);
+  tests.push(custom.bridgeFit({ "value": "A", "color": "gray"}, [{ "value": "5", "color": "gray"}, { "value": "Q", "color": "black"}, { "value": "Q", "color": "red"}], "red") === false);
+  tests.push(custom.bridgeFit({ "value": "7", "color": "red"}, [{ "value": "10", "color": "gray"}, { "value": "Q", "color": "gray"}, { "value": "J", "color": "red"}], "red") === false);
+  tests.push(custom.bridgeFit({ "value": "A", "color": "red"}, [{ "value": "Q", "color": "orange"}, { "value": "5", "color": "orange"}, { "value": "K", "color": "orange"}], "red") === true);
+  tests.push(custom.bridgeFit({ "value": "8", "color": "orange"}, [{ "value": "8", "color": "red"}, { "value": "8", "color": "gray"}, { "value": "2", "color": "orange"}], "red") === false);
+  tests.push(custom.bridgeFit({ "value": "6", "color": "black"}, [{ "value": "K", "color": "gray"}, { "value": "2", "color": "gray"}, { "value": "J", "color": "orange"}], "red") === false);
+
+  if (tests.some(x => !x)) console.log("WARNING: there are failing tests!");
+  console.log("End of tests");
+} 
